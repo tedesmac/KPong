@@ -1,10 +1,32 @@
 {
-	"format": 2,
+	"format": 3,
 	"game": {
-		"name": "Empty",
+		"name": "KPong",
 		"width": 640,
-		"height": 480
+		"height": 480,
+		"antiAliasingSamples": 2
 	},
-	"assets": [],
-	"rooms": []
+	"assets": [
+		{
+			"name": "Munro",
+			"file": "MunroSmall.ttf",
+			"type": "font",
+			"size": 14
+		},
+		{
+			"name" : "Cube",
+			"file" : "cube.obj",
+			"type" : "blob"
+		}
+	],
+	"rooms": [
+		{
+			"name": "level0",
+			"parent": null,
+			"neighbours": [],
+			"assets": [
+				"Munro14.kravur"
+			]
+		}
+	]
 }
