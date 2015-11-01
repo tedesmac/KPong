@@ -14,8 +14,13 @@
 			"size": 14
 		},
 		{
-			"name" : "Cube",
+			"name" : "cube",
 			"file" : "cube.obj",
+			"type" : "blob"
+		},
+		{
+			"name" : "monkey",
+			"file" : "monkey.obj",
 			"type" : "blob"
 		}
 	],
@@ -25,7 +30,8 @@
 			"parent": null,
 			"neighbours": [],
 			"assets": [
-				"Munro14.kravur"
+				"cube",
+				"monkey"
 			]
 		}
 	]
