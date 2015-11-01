@@ -4,6 +4,6 @@ precision mediump float;
 
 void kore(){
 
-	gl_FragColor = vec4(0.85, 0.85, 0.85, 1.0);
+	gl_FragColor = vec4(0.95, 0.95, 0.95, 1.0);
 
 }

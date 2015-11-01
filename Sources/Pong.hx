@@ -90,7 +90,7 @@ class Pong extends Game {
 		mvp = mvp.multmat(view);
 		mvp = mvp.multmat(model);
 
-		var cube = new ObjLoader(Loader.the.getBlob("monkey").toString());
+		var cube = new ObjLoader(Loader.the.getBlob("cube").toString());
 		var data = cube.data;
 		var indices = cube.indices;
 
@@ -115,6 +115,7 @@ class Pong extends Game {
 		for(i in 0...iData.length){
 			iData[i] = indices[i];
 		}
+		indexBuffer.unlock();
 
 		Configuration.setScreen(this);
 
@@ -129,13 +130,15 @@ class Pong extends Game {
 			g.setDepthMode(true, CompareMode.Less);
 			g.setCullMode(CullMode.CounterClockwise);
 
-			g.clear(Color.Black);
+			g.clear(Color.Pink);
 
 			g.setVertexBuffer(vertexBuffer);
 			g.setIndexBuffer(indexBuffer);
 			g.setProgram(program);
 
 			g.setMatrix(mvpID, mvp);
+
+			g.drawIndexedVertices();
 
 		g.end();
 
