@@ -2,5 +2,6 @@
 /build
 /korefile.js
 /notas.txt
+/Sources/kha.hxml
 *.blend
 *.blend1

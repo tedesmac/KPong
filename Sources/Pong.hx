@@ -33,17 +33,13 @@ class Pong extends Game {
 	var indexBuffer:IndexBuffer;
 	var program:Program;
 
-	var mvp:Matrix4;
-	var mvpID:ConstantLocation;
+	var projectionMatrixID:ConstantLocation;
 	var viewMatrixID:ConstantLocation;
-	var modelMatrixID:ConstantLocation;
 
-	var model:Matrix4;
-	var view:Matrix4;
-	var projection:Matrix4;
+	var viewMatrix:Matrix4;
+	var projectionMatrix:Matrix4;
 
-	var ballPos:Vector2;
-	var ballMovement:Vector2;
+	var ball:Ball;
 
 
 	public function new() {
@@ -65,57 +61,26 @@ class Pong extends Game {
 		structure.add("nor", VertexData.Float3);
 		var structureLength = 8;
 
-		var vertexShader = new VertexShader(Loader.the.getShader("simple.vert"));
-		var fragmentShader = new FragmentShader(Loader.the.getShader("simple.frag"));
+		var vertexShader = new VertexShader(Loader.the.getShader("uber.vert"));
+		var fragmentShader = new FragmentShader(Loader.the.getShader("uber.frag"));
 
 		program = new Program();
 		program.setVertexShader(vertexShader);
 		program.setFragmentShader(fragmentShader);
 		program.link(structure);
 
-		mvpID = program.getConstantLocation("MVP");
+		projectionMatrixID = program.getConstantLocation("projection");
+		viewMatrixID = program.getConstantLocation("view");
 
-		projection = Matrix4.perspectiveProjection(45.0, 4.0/3.0, 0.1, 100.0);
+		projectionMatrix = Matrix4.perspectiveProjection(45.0, 4.0/3.0, 0.1, 100.0);
 
-		view = Matrix4.lookAt(
+		viewMatrix = Matrix4.lookAt(
 			new Vector3(0, 9, 13),
 			new Vector3(0, 0, 0),
 			new Vector3(0, 1, 0)
 		);
 
-		model = Matrix4.identity();
-
-		mvp = Matrix4.identity();
-		mvp = mvp.multmat(projection);
-		mvp = mvp.multmat(view);
-		mvp = mvp.multmat(model);
-
-		var cube = new ObjLoader(Loader.the.getBlob("cube").toString());
-		var data = cube.data;
-		var indices = cube.indices;
-
-		vertexBuffer = new VertexBuffer(
-			Std.int(data.length/structureLength),
-			structure,
-			Usage.StaticUsage
-		);
-
-		var vbData = vertexBuffer.lock();
-		for(i in 0...vbData.length){
-			vbData.set(i, data[i]);
-		}
-		vertexBuffer.unlock();
-
-		indexBuffer = new IndexBuffer(
-			indices.length,
-			Usage.StaticUsage
-		);
-
-		var iData = indexBuffer.lock();
-		for(i in 0...iData.length){
-			iData[i] = indices[i];
-		}
-		indexBuffer.unlock();
+		ball = new Ball(program, structure);
 
 		Configuration.setScreen(this);
 
@@ -132,13 +97,10 @@ class Pong extends Game {
 
 			g.clear(Color.Pink);
 
-			g.setVertexBuffer(vertexBuffer);
-			g.setIndexBuffer(indexBuffer);
-			g.setProgram(program);
+			g.setMatrix(projectionMatrixID, projectionMatrix);
+			g.setMatrix(viewMatrixID, viewMatrix);
 
-			g.setMatrix(mvpID, mvp);
-
-			g.drawIndexedVertices();
+			ball.display(g);
 
 		g.end();
 

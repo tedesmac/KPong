@@ -1,27 +1,86 @@
 package;
 
 
-import kha.math.Vector2;
+import kha.Rectangle;
+import kha.Loader;
 
+import kha.graphics4.Graphics;
+import kha.graphics4.VertexBuffer;
+import kha.graphics4.IndexBuffer;
+import kha.graphics4.VertexStructure;
+import kha.graphics4.ConstantLocation;
+import kha.graphics4.Program;
+import kha.graphics4.Usage;
+
+import kha.math.Matrix4;
+import kha.math.Vector2;
+import kha.math.Vector4;
 
 class Ball{
 
 	var pos:Vector2;
 	var mov:Vector2;
+	var rec:kha.Rectangle;
+
+	var modelID:ConstantLocation;
+	var modelMatrix:Matrix4;
+
+	var colorID:ConstantLocation;
+	var color:Vector4;
+
+	var vertexBuffer:VertexBuffer;
+	var indexBuffer:IndexBuffer;
 
 	var speed = 1.5;
 
 
-	public function new(){
+	public function new(program:Program, structure:VertexStructure){
 
 		mov = new Vector2(0, 0);
 
-		var angle = kha.math.Random.getUpIn(25, 75);
+		var angle:Float = Std.random(50) + 25;
 		angle = (2*Math.PI*angle) / 360;
 
 		mov = new Vector2(Math.cos(angle), Math.sin(angle));
 
 		mov = mov.mult(speed);
+
+		rec = new kha.Rectangle(0, 0, 0.5, 0.5);
+
+		colorID = program.getConstantLocation("color");
+		color = new Vector4(1.0, 1.0, 1.0, 1.0);
+
+		modelID = program.getConstantLocation("model");
+
+		modelMatrix = Matrix4.identity();
+		modelMatrix = modelMatrix.mult(0.5);
+
+		var cube = new ObjLoader(Loader.the.getBlob("cube").toString());
+		var data = cube.data;
+		var indices = cube.indices;
+
+		vertexBuffer = new VertexBuffer(
+				Std.int(data.length/cube.structureLength),
+				structure,
+				Usage.StaticUsage
+		);
+
+		var vbData = vertexBuffer.lock();
+		for(i in 0...vbData.length){
+			vbData.set(i, data[i]);
+		}
+		vertexBuffer.unlock();
+
+		indexBuffer = new IndexBuffer(
+			indices.length,
+			Usage.StaticUsage
+		);
+
+		var iData = indexBuffer.lock();
+		for(i in 0...iData.length){
+			iData[i] = indices[i];
+		}
+		indexBuffer.unlock();
 
 	}
 
@@ -29,8 +88,17 @@ class Ball{
 
 	}
 
-	public function display(){
-		
+	public function display(g:Graphics){
+
+		g.setVertexBuffer(vertexBuffer);
+		g.setIndexBuffer(indexBuffer);
+
+		g.setMatrix(modelID, modelMatrix);
+
+		g.setFloat4(colorID, color.x, color.y, color.z, color.w);
+
+		g.drawIndexedVertices();
+
 	}
 
 }
