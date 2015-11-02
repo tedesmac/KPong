@@ -2,8 +2,8 @@
 	"format": 3,
 	"game": {
 		"name": "KPong",
-		"width": 640,
-		"height": 480,
+		"width": 1000,
+		"height": 600,
 		"antiAliasingSamples": 2
 	},
 	"assets": [

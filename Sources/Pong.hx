@@ -7,30 +7,26 @@ import kha.LoadingScreen;
 import kha.Configuration;
 import kha.FontStyle;
 import kha.Color;
+import kha.Button;
 
 import kha.graphics4.Program;
 import kha.graphics4.VertexStructure;
-import kha.graphics4.VertexBuffer;
-import kha.graphics4.IndexBuffer;
 import kha.graphics4.FragmentShader;
 import kha.graphics4.VertexShader;
 import kha.graphics4.VertexData;
-import kha.graphics4.Usage;
 import kha.graphics4.ConstantLocation;
 import kha.graphics4.CompareMode;
 import kha.graphics4.CullMode;
-import kha.graphics4.Graphics2;
 
 import kha.math.Matrix4;
 import kha.math.Vector3;
 import kha.math.Vector2;
+import kha.math.Vector4;
 
 
 class Pong extends Game {
 
 
-	var vertexBuffer:VertexBuffer;
-	var indexBuffer:IndexBuffer;
 	var program:Program;
 
 	var projectionMatrixID:ConstantLocation;
@@ -86,6 +82,12 @@ class Pong extends Game {
 
 	}
 
+	override public function update(){
+
+		ball.update();
+
+	}
+
 	override public function render(frame:Framebuffer){
 
 		var g = frame.g4;
@@ -97,13 +99,28 @@ class Pong extends Game {
 
 			g.clear(Color.Pink);
 
+			g.setProgram(program);
+
 			g.setMatrix(projectionMatrixID, projectionMatrix);
 			g.setMatrix(viewMatrixID, viewMatrix);
 
-			ball.display(g);
+			ball.render(g);
 
 		g.end();
 
 	}
+
+	override public function buttonDown(button:Button){
+		if(button == Button.UP){
+			ball.color = new Vector4(1.0, 0.0, 0.0, 1.0);
+		}
+	}
+
+	override public function buttonUp(button:Button){
+		if(button == Button.UP){
+			ball.color = new Vector4(0.2, 0.8, 0.5, 1.0);
+		}
+	}
+
 
 }

@@ -26,7 +26,7 @@ class Ball{
 	var modelMatrix:Matrix4;
 
 	var colorID:ConstantLocation;
-	var color:Vector4;
+	public var color:Vector4;
 
 	var vertexBuffer:VertexBuffer;
 	var indexBuffer:IndexBuffer;
@@ -41,19 +41,18 @@ class Ball{
 		var angle:Float = Std.random(50) + 25;
 		angle = (2*Math.PI*angle) / 360;
 
-		mov = new Vector2(Math.cos(angle), Math.sin(angle));
-
+		mov = new Vector2(0.5, 0.5);
 		mov = mov.mult(speed);
 
 		rec = new kha.Rectangle(0, 0, 0.5, 0.5);
 
 		colorID = program.getConstantLocation("color");
-		color = new Vector4(1.0, 1.0, 1.0, 1.0);
+		color = new Vector4(0.3, 0.8, 0.5, 1.0);
 
 		modelID = program.getConstantLocation("model");
 
 		modelMatrix = Matrix4.identity();
-		modelMatrix = modelMatrix.mult(0.5);
+		modelMatrix = modelMatrix.multmat(Matrix4.scale(0.5, 0.5, 0.5));
 
 		var cube = new ObjLoader(Loader.the.getBlob("cube").toString());
 		var data = cube.data;
@@ -86,9 +85,33 @@ class Ball{
 
 	public function update(){
 
+		pos = pos.add(mov);
+
+		if(pos.x < -3){
+			mov.x *= -1;
+			pos.x = -3;
+		}
+		if(pos.x > 2){
+			mov.x *= -1;
+			pos.x = 2;
+		}
+
+		if(pos.y < -5){
+			mov.y *= -1;
+			pos.y = -5;
+		}
+		if(pos.y > 4){
+			mov.y *= -1;
+			pos.y = 4;
+		}
+
+		modelMatrix = Matrix4.identity();
+		modelMatrix = modelMatrix.multmat(Matrix4.translation(pos.x, 0, pos.y));
+		modelMatrix = modelMatrix.multmat(Matrix4.scale(0.5, 0.5, 0.5));
+
 	}
 
-	public function display(g:Graphics){
+	public function render(g:Graphics){
 
 		g.setVertexBuffer(vertexBuffer);
 		g.setIndexBuffer(indexBuffer);
@@ -100,5 +123,6 @@ class Ball{
 		g.drawIndexedVertices();
 
 	}
+
 
 }
