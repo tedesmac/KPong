@@ -18,12 +18,12 @@ import kha.math.Vector4;
 
 class Ball{
 
-	var pos:Vector2;
-	var mov:Vector2;
+	public var pos:Vector2;
+	public var mov:Vector2;
 	var rec:kha.Rectangle;
 
 	var modelID:ConstantLocation;
-	var modelMatrix:Matrix4;
+	public var modelMatrix:Matrix4;
 
 	var colorID:ConstantLocation;
 	public var color:Vector4;
@@ -36,12 +36,14 @@ class Ball{
 
 	public function new(program:Program, structure:VertexStructure){
 
+		pos = new Vector2();
+
 		mov = new Vector2(0, 0);
 
 		var angle:Float = Std.random(50) + 25;
 		angle = (2*Math.PI*angle) / 360;
 
-		mov = new Vector2(0.5, 0.5);
+		mov = new Vector2(Math.cos(angle), Math.sin(angle));
 		mov = mov.mult(speed);
 
 		rec = new kha.Rectangle(0, 0, 0.5, 0.5);
@@ -113,12 +115,12 @@ class Ball{
 
 	public function render(g:Graphics){
 
-		g.setVertexBuffer(vertexBuffer);
-		g.setIndexBuffer(indexBuffer);
-
 		g.setMatrix(modelID, modelMatrix);
 
 		g.setFloat4(colorID, color.x, color.y, color.z, color.w);
+
+		g.setVertexBuffer(vertexBuffer);
+		g.setIndexBuffer(indexBuffer);
 
 		g.drawIndexedVertices();
 
