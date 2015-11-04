@@ -36,11 +36,11 @@ class Paddle{
 	var speed = 0.5;
 
 
-	public function new(program:Program, structure:VertexStructure){
+	public function new(program:Program, structure:VertexStructure, pos:Vector2){
 
 		rec = new kha.Rectangle(0, 0, 2, 1);
 
-		pos = new Vector2();
+		this.pos = pos;
 		mov = new Vector2(speed, 0);
 
 		colorID = program.getConstantLocation("color");

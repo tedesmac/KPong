@@ -37,6 +37,7 @@ class Pong extends Game {
 
 	var ball:Ball;
 	var player:Player;
+	var comp:Comp;
 
 
 	public function new() {
@@ -81,6 +82,8 @@ class Pong extends Game {
 
 		player = new Player(program, structure);
 
+		comp = new Comp(program, structure);
+
 		Configuration.setScreen(this);
 
 	}
@@ -89,6 +92,7 @@ class Pong extends Game {
 
 		ball.update();
 		player.update();
+		comp.update();
 
 	}
 
@@ -111,6 +115,8 @@ class Pong extends Game {
 			ball.render(g);
 
 			player.render(g);
+
+			comp.render(g);
 
 		g.end();
 

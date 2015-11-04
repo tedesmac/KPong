@@ -20,9 +20,7 @@ class Player extends Paddle{
 
 	public function new(program:Program, structure:VertexStructure){
 
-		super(program, structure);
-
-		pos = new Vector2(0, 5);
+		super(program, structure, new Vector2(0, 5));
 
 		color = new Vector4(1.0, 1.0, 1.0, 1.0);
 
