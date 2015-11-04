@@ -49,6 +49,7 @@ class Paddle{
 		modelID = program.getConstantLocation("model");
 
 		modelMatrix = Matrix4.identity();
+		modelMatrix = modelMatrix.multmat(Matrix4.translation(pos.x, 0, pos.y));
 		modelMatrix = modelMatrix.multmat(Matrix4.scale(2, 1, 1));
 
 		var cube = new ObjLoader(Loader.the.getBlob("cube").toString());

@@ -14,6 +14,8 @@ class Comp extends Paddle{
 
 		super(program, structure, new Vector2(0, -5));
 
+		color = new Vector4(1.0, 2.0, 5.0, 1.0);
+
 	}
 
 	override public function update(){
