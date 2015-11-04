@@ -36,6 +36,7 @@ class Pong extends Game {
 	var projectionMatrix:Matrix4;
 
 	var ball:Ball;
+	var player:Player;
 
 
 	public function new() {
@@ -78,6 +79,8 @@ class Pong extends Game {
 
 		ball = new Ball(program, structure);
 
+		player = new Player(program, structure);
+
 		Configuration.setScreen(this);
 
 	}
@@ -85,6 +88,7 @@ class Pong extends Game {
 	override public function update(){
 
 		ball.update();
+		player.update();
 
 	}
 
@@ -106,20 +110,18 @@ class Pong extends Game {
 
 			ball.render(g);
 
+			player.render(g);
+
 		g.end();
 
 	}
 
 	override public function buttonDown(button:Button){
-		if(button == Button.UP){
-			ball.color = new Vector4(1.0, 0.0, 0.0, 1.0);
-		}
+
 	}
 
 	override public function buttonUp(button:Button){
-		if(button == Button.UP){
-			ball.color = new Vector4(0.2, 0.8, 0.5, 1.0);
-		}
+
 	}
 
 

@@ -18,20 +18,20 @@ import kha.math.Vector4;
 
 class Ball{
 
-	public var pos:Vector2;
-	public var mov:Vector2;
+	var pos:Vector2;
+	var mov:Vector2;
 	var rec:kha.Rectangle;
 
 	var modelID:ConstantLocation;
-	public var modelMatrix:Matrix4;
+	var modelMatrix:Matrix4;
 
 	var colorID:ConstantLocation;
-	public var color:Vector4;
+	var color:Vector4;
 
 	var vertexBuffer:VertexBuffer;
 	var indexBuffer:IndexBuffer;
 
-	var speed = 1.5;
+	var speed = 0.5;
 
 
 	public function new(program:Program, structure:VertexStructure){
